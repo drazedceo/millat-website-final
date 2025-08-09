@@ -13,27 +13,27 @@ const Manufacturing = () => {
   const processCards = [
     {
       title: 'Rubber & Plastic Molding',
-      image: 'https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=800&h=600&fit=crop',
+      image: 'https://media.istockphoto.com/id/1218547333/photo/a-process-of-flat-surface-grinding-with-a-lot-of-sparks-and-liquid-cooling-indoors-at.jpg?s=612x612&w=0&k=20&c=gIUJJ3baTdD1ayTBiC1ce3qaiIHpizqy5r41qBgb3PM=',
       text: 'Utilizing advanced compression and transfer molding techniques to produce high-precision rubber and plastic components.'
     },
     {
       title: 'Rubber-to-Metal Bonding',
-      image: 'https://images.unsplash.com/photo-1565793298595-6a879b1d9492?w=800&h=600&fit=crop',
+      image: 'https://media.istockphoto.com/id/915454512/photo/repairing-a-bicycle-tube-in-a-tire-bonding-workshop-detek-repair-station-in-the-vulcanization.jpg?s=612x612&w=0&k=20&c=boUwOgZ2mMIOPETV4uJKy0LhYL3DkeSzwLDfdReFiZw=',
       text: 'Our specialized chemical bonding process creates durable, high-integrity bonds between various rubber compounds and metal substrates.'
     },
     {
       title: 'Plastic Injection Molding',
-      image: 'https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=800&h=600&fit=crop',
+      image: 'https://www.3dsystems.com/cdn-cgi/image/w=640,q=75,f=auto/sites/default/files/2020-04/small3d-systems-cimatron-synergy_0328-15in.jpg',
       text: 'High-speed, automated injection molding for creating complex and detailed plastic parts with exceptional consistency.'
     },
     {
       title: 'In-house Tooling & Die Making',
-      image: 'https://images.unsplash.com/photo-1565793298595-6a879b1d9492?w=800&h=600&fit=crop',
+      image: 'https://www.paragonmedical.com/wp-content/uploads/in-house-production-tooling-manufacturing-400x267.jpg',
       text: 'Our on-site tool and die shop allows for rapid prototyping, custom mold creation, and precise maintenance.'
     },
     {
       title: 'Quality Checkpoints',
-      image: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=800&h=600&fit=crop',
+      image: 'https://s1-ecp.nextdayflyers.com/sms/images/sms/Static%20Page%20Images/20170402_Quality-Checkpoint-Hero.jpg',
       text: 'Rigorous quality control at every stage, from raw material inspection to final product testing, ensures ISO 9001:2015 compliance.'
     },
     {
