@@ -1460,7 +1460,7 @@ const ProductDetail = () => {
       </section>
 
       {/* Product Gallery */}
-      <section className="section-padding bg-light">
+      <section className="section-padding bg-millat-teal text-white">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12 fade-in">
             <h2 className="text-3xl font-bold mb-6">Product Gallery</h2>
@@ -1494,7 +1494,7 @@ const ProductDetail = () => {
             <p className="text-xl mb-8 opacity-90">
               Let's build it together. Contact us today for a quote or to discuss your specific requirements with our experts.
             </p>
-            
+            <Link to="/contact" className="bg-white text-primary hover:bg-gray-50 px-8 py-4 rounded-lg font-semibold transition-colors">
             {/* Contact Links */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center mb-8">
               <a
@@ -1526,7 +1526,6 @@ const ProductDetail = () => {
               to="/get-in-touch" 
               className="bg-white text-primary hover:bg-gray-50 px-8 py-4 rounded-lg font-semibold transition-colors inline-block"
             >
-              get in touch
             </Link>
           </div>
         </div>
