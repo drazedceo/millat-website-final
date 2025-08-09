@@ -1,0 +1,43 @@
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { AnimatePresence } from 'framer-motion';
+import Header from './components/Header';
+import Footer from './components/Footer';
+import PageTransition from './components/PageTransition';
+import Home from './pages/Home';
+import About from './pages/About';
+import Manufacturing from './pages/Manufacturing';
+import Certifications from './pages/Certifications';
+import Industries from './pages/Industries';
+import Products from './pages/Products';
+import ProductDetail from './pages/ProductDetail';
+import Contact from './pages/Contact';
+import './App.css';
+
+function App() {
+  return (
+    <Router>
+      <div className="min-h-screen bg-white">
+        <Header />
+        <AnimatePresence mode="wait">
+          <main>
+            <Routes>
+              <Route path="/" element={<PageTransition><Home /></PageTransition>} />
+              <Route path="/about" element={<PageTransition><About /></PageTransition>} />
+              <Route path="/manufacturing" element={<PageTransition><Manufacturing /></PageTransition>} />
+              <Route path="/certifications" element={<PageTransition><Certifications /></PageTransition>} />
+              <Route path="/industries" element={<PageTransition><Industries /></PageTransition>} />
+              <Route path="/products" element={<PageTransition><Products /></PageTransition>} />
+              <Route path="/products/:productId" element={<PageTransition><ProductDetail /></PageTransition>} />
+              <Route path="/contact" element={<PageTransition><Contact /></PageTransition>} />
+              <Route path="/get-in-touch" element={<PageTransition><Contact /></PageTransition>} />
+            </Routes>
+          </main>
+        </AnimatePresence>
+        <Footer />
+      </div>
+    </Router>
+  );
+}
+
+export default App;
