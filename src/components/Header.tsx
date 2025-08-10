@@ -1,64 +1,38 @@
-import React, { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { Menu, X } from "lucide-react";
+import React, { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { Menu, X } from 'lucide-react';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [showProductsDropdown, setShowProductsDropdown] = useState(false);
-  const [activeCategory, setActiveCategory] = useState(null);
   const location = useLocation();
 
-  // Example data — replace with your real categories/products
-  const productsData = [
-    {
-      category: "Pipes",
-      slug: "/products/pipes",
-      products: [
-        { name: "PVC Pipe", slug: "/products/pipes/pvc-pipe" },
-        { name: "HDPE Pipe", slug: "/products/pipes/hdpe-pipe" },
-      ],
-    },
-    {
-      category: "Fittings",
-      slug: "/products/fittings",
-      products: [
-        { name: "Elbow Fitting", slug: "/products/fittings/elbow" },
-        { name: "Tee Fitting", slug: "/products/fittings/tee" },
-      ],
-    },
-    {
-      category: "Valves",
-      slug: "/products/valves",
-      products: [
-        { name: "Gate Valve", slug: "/products/valves/gate" },
-        { name: "Ball Valve", slug: "/products/valves/ball" },
-      ],
-    },
-  ];
-
-  const navigationLinks = [
-    { name: "Home", href: "/" },
-    { name: "About Us", href: "/about" },
-    { name: "Manufacturing", href: "/manufacturing" },
-    { name: "Certifications", href: "/certifications" },
-    { name: "Industries Served", href: "/industries" },
-  ];
-
+  // Handle scroll effect for header style
   useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 50);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Close mobile menu when route changes
   useEffect(() => {
     setIsMenuOpen(false);
   }, [location]);
 
+  const navigationLinks = [
+    { name: 'Home', href: '/' },
+    { name: 'About Us', href: '/about' },
+    { name: 'Manufacturing', href: '/manufacturing' },
+    { name: 'Certifications', href: '/certifications' },
+    { name: 'Industries Served', href: '/industries' },
+  ];
+
   return (
     <header
       className={`sticky top-0 z-50 h-20 transition-all duration-300 ${
-        isScrolled ? "bg-white shadow-lg" : "bg-white shadow-sm"
+        isScrolled ? 'bg-white shadow-lg' : 'bg-white shadow-sm'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 h-full flex items-center justify-between">
@@ -72,90 +46,30 @@ const Header = () => {
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden lg:flex items-center gap-x-3 text-gray-800 font-medium text-sm tracking-wide relative">
+        <nav className="hidden lg:flex items-center gap-x-3 text-gray-800 font-medium text-sm tracking-wide">
           {navigationLinks.map((link) => (
             <Link
               key={link.name}
               to={link.href}
               className={`relative px-2.5 py-2 whitespace-nowrap transition-all duration-200 ${
                 location.pathname === link.href
-                  ? "text-[#00B9B3] after:absolute after:left-0 after:bottom-0 after:w-full after:h-[2px] after:bg-[#00B9B3]"
-                  : "hover:text-[#00B9B3]"
+                  ? 'text-[#00B9B3] after:absolute after:left-0 after:bottom-0 after:w-full after:h-[2px] after:bg-[#00B9B3]'
+                  : 'hover:text-[#00B9B3]'
               }`}
             >
               {link.name}
             </Link>
           ))}
-
-          {/* Products Link */}
-          <div
-            className="relative"
-            onMouseEnter={() => {
-              setShowProductsDropdown(true);
-              setActiveCategory(productsData[0]); // default first category
-            }}
-            onMouseLeave={() => setShowProductsDropdown(false)}
+          <Link
+            to="/products"
+            className={`relative px-2.5 py-2 whitespace-nowrap transition-all duration-200 ${
+              location.pathname === '/products'
+                ? 'text-[#00B9B3] after:absolute after:left-0 after:bottom-0 after:w-full after:h-[2px] after:bg-[#00B9B3]'
+                : 'hover:text-[#00B9B3]'
+            }`}
           >
-            <button
-              className={`relative px-2.5 py-2 whitespace-nowrap transition-all duration-200 ${
-                location.pathname.startsWith("/products")
-                  ? "text-[#00B9B3] after:absolute after:left-0 after:bottom-0 after:w-full after:h-[2px] after:bg-[#00B9B3]"
-                  : "hover:text-[#00B9B3]"
-              }`}
-            >
-              Products
-            </button>
-
-            {/* Full-width Dropdown */}
-            {showProductsDropdown && (
-              <div className="absolute left-0 top-full w-screen bg-white shadow-xl border-t border-gray-200 py-6 z-50">
-                <div className="max-w-7xl mx-auto px-6 flex">
-                  {/* Categories */}
-                  <div className="w-1/3 pr-6 border-r border-gray-100">
-                    <h4 className="font-bold text-gray-900 mb-4">
-                      Product Categories
-                    </h4>
-                    <ul className="space-y-2">
-                      {productsData.map((cat) => (
-                        <li key={cat.category}>
-                          <button
-                            className={`block w-full text-left px-3 py-2 rounded-md transition ${
-                              activeCategory?.category === cat.category
-                                ? "bg-[#00B9B3] text-white"
-                                : "hover:bg-gray-100 text-gray-800"
-                            }`}
-                            onMouseEnter={() => setActiveCategory(cat)}
-                            onClick={() => (window.location.href = cat.slug)}
-                          >
-                            {cat.category}
-                          </button>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-
-                  {/* Products */}
-                  <div className="w-2/3 pl-6">
-                    <h4 className="font-bold text-gray-900 mb-4">
-                      {activeCategory?.category} Products
-                    </h4>
-                    <ul className="grid grid-cols-2 gap-3">
-                      {activeCategory?.products.map((prod) => (
-                        <li key={prod.name}>
-                          <Link
-                            to={prod.slug}
-                            className="block px-3 py-2 rounded-md hover:bg-gray-100 text-gray-700"
-                          >
-                            {prod.name}
-                          </Link>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            )}
-          </div>
+            Products
+          </Link>
         </nav>
 
         {/* CTA Button */}
@@ -174,6 +88,74 @@ const Header = () => {
           {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
         </button>
       </div>
+
+      {/* Mobile Navigation Drawer */}
+      <div
+        className={`lg:hidden fixed top-0 right-0 h-full w-80 bg-white shadow-2xl transform transition-transform duration-300 ease-in-out z-50 ${
+          isMenuOpen ? 'translate-x-0' : 'translate-x-full'
+        }`}
+      >
+        <div className="flex flex-col h-full">
+          {/* Drawer Header */}
+          <div className="p-4 flex justify-between items-center">
+            <img
+              src="/images/logo.png"
+              alt="Millat Polymer"
+              className="w-[180px] object-contain"
+            />
+            <button
+              onClick={() => setIsMenuOpen(false)}
+              className="p-2 text-gray-700 hover:text-[#00B9B3] transition-colors"
+            >
+              <X className="h-6 w-6" />
+            </button>
+          </div>
+
+          {/* Scrollable Links */}
+          <div className="flex-1 overflow-y-auto p-4 space-y-4">
+            {navigationLinks.map((link) => (
+              <Link
+                key={link.name}
+                to={link.href}
+                className={`block text-base font-semibold transition-colors py-2.5 border-b border-gray-100 tracking-wide whitespace-nowrap ${
+                  location.pathname === link.href
+                    ? 'text-[#00B9B3]'
+                    : 'text-gray-700 hover:text-[#00B9B3]'
+                }`}
+                onClick={() => setIsMenuOpen(false)}
+              >
+                {link.name}
+              </Link>
+            ))}
+            <Link
+              to="/products"
+              className={`block text-base font-semibold transition-colors py-2.5 border-b border-gray-100 tracking-wide whitespace-nowrap ${
+                location.pathname === '/products'
+                  ? 'text-[#00B9B3]'
+                  : 'text-gray-700 hover:text-[#00B9B3]'
+              }`}
+              onClick={() => setIsMenuOpen(false)}
+            >
+              Products
+            </Link>
+            <Link
+              to="/contact"
+              className="bg-[#FF6F3C] text-white px-4 py-3 rounded-full shadow-md hover:bg-opacity-90 transition-all duration-200 font-medium inline-block mt-4 text-center text-sm leading-tight"
+              onClick={() => setIsMenuOpen(false)}
+            >
+              get in<br />touch
+            </Link>
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile Menu Overlay */}
+      {isMenuOpen && (
+        <div
+          className="lg:hidden fixed inset-0 bg-black bg-opacity-50 z-40"
+          onClick={() => setIsMenuOpen(false)}
+        />
+      )}
     </header>
   );
 };
