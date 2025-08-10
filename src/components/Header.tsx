@@ -23,7 +23,7 @@ const Header = () => {
 
   const navigationLinks = [
     { name: 'Home', href: '/' },
-    { name: 'About Us', href: '/about' },
+    { name: 'Company', href: '/about' },
     { name: 'Manufacturing', href: '/manufacturing' },
     { name: 'Certifications', href: '/certifications' },
     { name: 'Industries Served', href: '/industries' },
