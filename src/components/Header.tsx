@@ -22,7 +22,7 @@ const Header = () => {
   const navLinks = [
     { name: "Home", href: "/" },
     {
-      name: "About Us",
+      name: "Company", // Changed from About Us
       href: "/about",
       submenu: [
         { name: "Our Story", href: "/about/story" },
@@ -100,15 +100,16 @@ const Header = () => {
             >
               <Link
                 to={link.href}
-                className={`flex items-center gap-1 px-3 py-2 font-medium transition-colors ${
-                  location.pathname === link.href
-                    ? "text-[#00B9B3] border-b-2 border-[#FF6F3C]"
-                    : "text-gray-800 hover:text-[#00B9B3]"
-                }`}
+                className={`flex items-center gap-1 px-3 py-2 font-medium transition-colors duration-200 rounded-md
+                  ${
+                    location.pathname === link.href
+                      ? "bg-[#FF6F3C] text-white"
+                      : "text-gray-800 hover:bg-[#FF6F3C] hover:text-white"
+                  }`}
               >
                 {link.name}
                 {link.submenu && (
-                  <ChevronDown className="w-4 h-4 text-gray-500 group-hover:text-[#00B9B3] transition-colors" />
+                  <ChevronDown className="w-4 h-4 text-gray-500 group-hover:text-white transition-colors" />
                 )}
               </Link>
 
@@ -119,7 +120,7 @@ const Header = () => {
                     <Link
                       key={sub.name}
                       to={sub.href}
-                      className="text-sm text-gray-700 hover:text-[#FF6F3C] transition-colors"
+                      className="text-sm text-gray-700 hover:bg-[#FF6F3C] hover:text-white px-2 py-1 rounded transition-colors"
                     >
                       {sub.name}
                     </Link>
@@ -163,11 +164,12 @@ const Header = () => {
           </button>
         </div>
 
-        <div className="p-4 overflow-y-auto space-y-4">
+        {/* Scrollable menu for mobile */}
+        <div className="p-4 overflow-y-auto space-y-4 max-h-[calc(100vh-80px)]">
           {navLinks.map((link) => (
             <div key={link.name}>
               <div
-                className="flex justify-between items-center py-2 border-b text-gray-800 font-semibold cursor-pointer"
+                className="flex justify-between items-center py-2 border-b text-gray-800 font-semibold cursor-pointer hover:bg-[#FF6F3C] hover:text-white rounded-md px-2"
                 onClick={() =>
                   setActiveDropdown(
                     activeDropdown === link.name ? null : link.name
@@ -189,7 +191,7 @@ const Header = () => {
                     <Link
                       key={sub.name}
                       to={sub.href}
-                      className="block text-sm text-gray-600 hover:text-[#FF6F3C]"
+                      className="block text-sm text-gray-600 hover:bg-[#FF6F3C] hover:text-white px-2 py-1 rounded"
                       onClick={() => setIsMenuOpen(false)}
                     >
                       {sub.name}
