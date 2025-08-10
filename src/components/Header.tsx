@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, ChevronDown } from 'lucide-react';
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const location = useLocation();
 
   // Handle scroll effect for header style
@@ -23,11 +24,69 @@ const Header = () => {
 
   const navigationLinks = [
     { name: 'Home', href: '/' },
-    { name: 'Company', href: '/about' },
-    { name: 'Manufacturing', href: '/manufacturing' },
+    { 
+      name: 'Company', 
+      href: '/about',
+      dropdown: [
+        { name: 'Our Story', href: '/our-story' },
+        { name: 'Vision, Mission & Values', href: '/vision-mission-values' },
+        { name: 'Leadership Team', href: '/leadership-team' },
+        { name: 'CSR Initiatives', href: '/csr-initiatives' },
+        { name: 'Achievements & Awards', href: '/achievements-awards' }
+      ]
+    },
+    { 
+      name: 'Manufacturing', 
+      href: '/manufacturing',
+      dropdown: [
+        { name: 'Manufacturing Facilities', href: '/manufacturing-facilities' },
+        { name: 'Production Processes', href: '/production-processes' },
+        { name: 'Quality Control & Testing', href: '/quality-control-testing' },
+        { name: 'In-House Tooling & Moulding', href: '/in-house-tooling-moulding' },
+        { name: 'Material Compounding', href: '/material-compounding' },
+        { name: 'R&D & Innovation', href: '/rd-innovation' }
+      ]
+    },
+    { 
+      name: 'Products', 
+      href: '/products',
+      dropdown: [
+        { name: 'Rubber Components', href: '/products#rubber-components' },
+        { name: 'Plastic Components', href: '/products#plastic-components' },
+        { name: 'PVC & Utility Components', href: '/products#pvc-utility-components' },
+        { name: 'EPDM / Silicone Profiles', href: '/products#epdm-silicone-profiles' }
+      ]
+    },
+    { 
+      name: 'Capabilities', 
+      href: '/capabilities',
+      dropdown: [
+        { name: 'In-House Compounding', href: '/capabilities/in-house-compounding' },
+        { name: 'Technical Expertise', href: '/capabilities/technical-expertise' },
+        { name: 'Testing & Quality Assurance', href: '/capabilities/testing-quality-assurance' },
+        { name: 'Product Customization', href: '/capabilities/product-customization' },
+        { name: 'Large-Scale Production', href: '/capabilities/large-scale-production' },
+        { name: 'Prototype Development', href: '/capabilities/prototype-development' },
+        { name: 'Supply Chain & Logistics', href: '/capabilities/supply-chain-logistics' }
+      ]
+    },
+    { 
+      name: 'Compliance', 
+      href: '/compliance',
+      dropdown: [
+        { name: 'Quality Management System', href: '/compliance/quality-management-system' },
+        { name: 'Environmental Standards', href: '/compliance/environmental-standards' },
+        { name: 'Occupational Health & Safety', href: '/compliance/occupational-health-safety' },
+        { name: 'Material Compliance Certifications', href: '/compliance/material-compliance-certifications' }
+      ]
+    },
     { name: 'Certifications', href: '/certifications' },
-    { name: 'Industries Served', href: '/industries' },
+    { name: 'Industries Served', href: '/industries' }
   ];
+
+  const handleDropdownToggle = (linkName: string) => {
+    setOpenDropdown(openDropdown === linkName ? null : linkName);
+  };
 
   return (
     <header
@@ -48,28 +107,47 @@ const Header = () => {
         {/* Desktop Navigation */}
         <nav className="hidden lg:flex items-center gap-x-3 text-gray-800 font-medium text-sm tracking-wide">
           {navigationLinks.map((link) => (
-            <Link
-              key={link.name}
-              to={link.href}
-              className={`relative px-2.5 py-2 whitespace-nowrap transition-all duration-200 ${
-                location.pathname === link.href
-                  ? 'text-[#00B9B3] after:absolute after:left-0 after:bottom-0 after:w-full after:h-[2px] after:bg-[#00B9B3]'
-                  : 'hover:text-[#00B9B3]'
-              }`}
-            >
-              {link.name}
-            </Link>
+            <div key={link.name} className="relative group">
+              {link.dropdown ? (
+                <>
+                  <button
+                    className={`relative px-2.5 py-2 whitespace-nowrap transition-all duration-200 flex items-center ${
+                      location.pathname === link.href || link.dropdown.some(item => location.pathname === item.href)
+                        ? 'text-[#00B9B3] after:absolute after:left-0 after:bottom-0 after:w-full after:h-[2px] after:bg-[#00B9B3]'
+                        : 'hover:text-[#00B9B3]'
+                    }`}
+                  >
+                    {link.name}
+                    <ChevronDown className="h-4 w-4 ml-1" />
+                  </button>
+                  <div className="absolute top-full left-0 mt-2 w-64 bg-white shadow-lg rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                    <div className="py-2">
+                      {link.dropdown.map((item) => (
+                        <Link
+                          key={item.name}
+                          to={item.href}
+                          className="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-[#00B9B3] transition-colors"
+                        >
+                          {item.name}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                </>
+              ) : (
+                <Link
+                  to={link.href}
+                  className={`relative px-2.5 py-2 whitespace-nowrap transition-all duration-200 ${
+                    location.pathname === link.href
+                      ? 'text-[#00B9B3] after:absolute after:left-0 after:bottom-0 after:w-full after:h-[2px] after:bg-[#00B9B3]'
+                      : 'hover:text-[#00B9B3]'
+                  }`}
+                >
+                  {link.name}
+                </Link>
+              )}
+            </div>
           ))}
-          <Link
-            to="/products"
-            className={`relative px-2.5 py-2 whitespace-nowrap transition-all duration-200 ${
-              location.pathname === '/products'
-                ? 'text-[#00B9B3] after:absolute after:left-0 after:bottom-0 after:w-full after:h-[2px] after:bg-[#00B9B3]'
-                : 'hover:text-[#00B9B3]'
-            }`}
-          >
-            Products
-          </Link>
         </nav>
 
         {/* CTA Button */}
@@ -114,30 +192,50 @@ const Header = () => {
           {/* Scrollable Links */}
           <div className="flex-1 overflow-y-auto p-4 space-y-4">
             {navigationLinks.map((link) => (
-              <Link
-                key={link.name}
-                to={link.href}
-                className={`block text-base font-semibold transition-colors py-2.5 border-b border-gray-100 tracking-wide whitespace-nowrap ${
-                  location.pathname === link.href
-                    ? 'text-[#00B9B3]'
-                    : 'text-gray-700 hover:text-[#00B9B3]'
-                }`}
-                onClick={() => setIsMenuOpen(false)}
-              >
-                {link.name}
-              </Link>
+              <div key={link.name}>
+                {link.dropdown ? (
+                  <>
+                    <button
+                      onClick={() => handleDropdownToggle(link.name)}
+                      className={`flex items-center justify-between w-full text-base font-semibold transition-colors py-2.5 border-b border-gray-100 tracking-wide ${
+                        location.pathname === link.href || link.dropdown.some(item => location.pathname === item.href)
+                          ? 'text-[#00B9B3]'
+                          : 'text-gray-700 hover:text-[#00B9B3]'
+                      }`}
+                    >
+                      {link.name}
+                      <ChevronDown className={`h-4 w-4 transition-transform ${openDropdown === link.name ? 'rotate-180' : ''}`} />
+                    </button>
+                    {openDropdown === link.name && (
+                      <div className="pl-4 mt-2 space-y-2">
+                        {link.dropdown.map((item) => (
+                          <Link
+                            key={item.name}
+                            to={item.href}
+                            className="block text-sm text-gray-600 hover:text-[#00B9B3] py-1 transition-colors"
+                            onClick={() => setIsMenuOpen(false)}
+                          >
+                            {item.name}
+                          </Link>
+                        ))}
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  <Link
+                    to={link.href}
+                    className={`block text-base font-semibold transition-colors py-2.5 border-b border-gray-100 tracking-wide whitespace-nowrap ${
+                      location.pathname === link.href
+                        ? 'text-[#00B9B3]'
+                        : 'text-gray-700 hover:text-[#00B9B3]'
+                    }`}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    {link.name}
+                  </Link>
+                )}
+              </div>
             ))}
-            <Link
-              to="/products"
-              className={`block text-base font-semibold transition-colors py-2.5 border-b border-gray-100 tracking-wide whitespace-nowrap ${
-                location.pathname === '/products'
-                  ? 'text-[#00B9B3]'
-                  : 'text-gray-700 hover:text-[#00B9B3]'
-              }`}
-              onClick={() => setIsMenuOpen(false)}
-            >
-              Products
-            </Link>
             <Link
               to="/contact"
               className="bg-[#FF6F3C] text-white px-4 py-3 rounded-full shadow-md hover:bg-opacity-90 transition-all duration-200 font-medium inline-block mt-4 text-center text-sm leading-tight"
