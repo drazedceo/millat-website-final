@@ -5,18 +5,15 @@ import { Menu, X } from 'lucide-react';
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isProductsOpen, setIsProductsOpen] = useState(false);
   const location = useLocation();
 
-  // Handle scroll effect for header style
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-    };
+    const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Close mobile menu when route changes
   useEffect(() => {
     setIsMenuOpen(false);
   }, [location]);
@@ -29,6 +26,14 @@ const Header = () => {
     { name: 'Industries Served', href: '/industries' },
   ];
 
+  const productCategories = [
+    { name: 'Category 1', href: '/products/category1' },
+    { name: 'Category 2', href: '/products/category2' },
+    { name: 'Category 3', href: '/products/category3' },
+    { name: 'Category 4', href: '/products/category4' },
+    { name: 'Category 5', href: '/products/category5' },
+  ];
+
   return (
     <header
       className={`sticky top-0 z-50 h-20 transition-all duration-300 ${
@@ -38,15 +43,11 @@ const Header = () => {
       <div className="max-w-7xl mx-auto px-4 h-full flex items-center justify-between">
         {/* Logo */}
         <Link to="/">
-          <img
-            src="/images/logo.png"
-            alt="Millat Polymer Logo"
-            className="w-32 object-contain"
-          />
+          <img src="/images/logo.png" alt="Millat Polymer Logo" className="w-32 object-contain" />
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden lg:flex items-center gap-x-3 text-gray-800 font-medium text-sm tracking-wide">
+        <nav className="hidden lg:flex items-center gap-x-3 text-gray-800 font-medium text-sm tracking-wide relative">
           {navigationLinks.map((link) => (
             <Link
               key={link.name}
@@ -60,16 +61,43 @@ const Header = () => {
               {link.name}
             </Link>
           ))}
-          <Link
-            to="/products"
-            className={`relative px-2.5 py-2 whitespace-nowrap transition-all duration-200 ${
-              location.pathname === '/products'
-                ? 'text-[#00B9B3] after:absolute after:left-0 after:bottom-0 after:w-full after:h-[2px] after:bg-[#00B9B3]'
-                : 'hover:text-[#00B9B3]'
-            }`}
+
+          {/* Products with Mega Menu */}
+          <div
+            className="relative"
+            onMouseEnter={() => setIsProductsOpen(true)}
+            onMouseLeave={() => setIsProductsOpen(false)}
           >
-            Products
-          </Link>
+            <button
+              className={`relative px-2.5 py-2 whitespace-nowrap transition-all duration-200 ${
+                location.pathname.startsWith('/products')
+                  ? 'text-[#00B9B3] after:absolute after:left-0 after:bottom-0 after:w-full after:h-[2px] after:bg-[#00B9B3]'
+                  : 'hover:text-[#00B9B3]'
+              }`}
+            >
+              Products
+            </button>
+
+            {/* Mega Menu */}
+            {isProductsOpen && (
+              <div className="absolute left-0 top-full w-screen bg-white shadow-xl border-t border-gray-200 animate-slideDown">
+                <div className="max-w-7xl mx-auto px-8 py-6 grid grid-cols-3 gap-6">
+                  {productCategories.map((category) => (
+                    <Link
+                      key={category.name}
+                      to={category.href}
+                      className="p-4 rounded-lg hover:bg-gray-50 transition"
+                    >
+                      <div className="font-semibold text-gray-800">{category.name}</div>
+                      <p className="text-sm text-gray-500 mt-1">
+                        Short description of {category.name}.
+                      </p>
+                    </Link>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
         </nav>
 
         {/* CTA Button */}
@@ -98,11 +126,7 @@ const Header = () => {
         <div className="flex flex-col h-full">
           {/* Drawer Header */}
           <div className="p-4 flex justify-between items-center">
-            <img
-              src="/images/logo.png"
-              alt="Millat Polymer"
-              className="w-[180px] object-contain"
-            />
+            <img src="/images/logo.png" alt="Millat Polymer" className="w-[180px] object-contain" />
             <button
               onClick={() => setIsMenuOpen(false)}
               className="p-2 text-gray-700 hover:text-[#00B9B3] transition-colors"
@@ -156,6 +180,17 @@ const Header = () => {
           onClick={() => setIsMenuOpen(false)}
         />
       )}
+
+      {/* Animation for dropdown */}
+      <style>{`
+        @keyframes slideDown {
+          from { opacity: 0; transform: translateY(-10px); }
+          to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-slideDown {
+          animation: slideDown 0.3s ease forwards;
+        }
+      `}</style>
     </header>
   );
 };
