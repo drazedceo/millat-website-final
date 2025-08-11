@@ -5,9 +5,10 @@ import { Menu, X, ChevronDown } from 'lucide-react';
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
-  const [openDropdown, setOpenDropdown] = useState(null);
+  const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const location = useLocation();
 
+  // Handle scroll effect for header style
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
@@ -16,6 +17,7 @@ const Header = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // Close mobile menu when route changes
   useEffect(() => {
     setIsMenuOpen(false);
   }, [location]);
@@ -82,50 +84,49 @@ const Header = () => {
     { name: 'Industries Served', href: '/industries' }
   ];
 
-  const handleDropdownToggle = (linkName) => {
+  const handleDropdownToggle = (linkName: string) => {
     setOpenDropdown(openDropdown === linkName ? null : linkName);
   };
 
   return (
     <header
-      className={`sticky top-0 z-50 h-20 transition-all duration-300 ${
+      className={sticky top-0 z-50 h-20 transition-all duration-300 ${
         isScrolled ? 'bg-white shadow-lg' : 'bg-white shadow-sm'
-      }`}
+      }}
     >
-      {/* FULL WIDTH HEADER WITH EXTRA ZOOM OUT */}
-      <div className="w-full px-8 lg:px-14 h-full flex items-center justify-between">
-        {/* Logo smaller */}
+      <div className="max-w-7xl mx-auto px-4 h-full flex items-center justify-between">
+        {/* Logo */}
         <Link to="/">
           <img
             src="/images/logo.png"
             alt="Millat Polymer Logo"
-            className="w-24 lg:w-28 object-contain"
+            className="w-32 object-contain"
           />
         </Link>
 
         {/* Desktop Navigation */}
-        <nav className="hidden lg:flex items-center gap-x-10 text-gray-800 font-medium text-xs tracking-wide">
+        <nav className="hidden lg:flex items-center gap-x-3 text-gray-800 font-medium text-sm tracking-wide">
           {navigationLinks.map((link) => (
             <div key={link.name} className="relative group">
               {link.dropdown ? (
                 <>
                   <button
-                    className={`relative px-1.5 py-1 whitespace-nowrap transition-all duration-200 flex items-center ${
+                    className={relative px-2.5 py-2 whitespace-nowrap transition-all duration-200 flex items-center ${
                       location.pathname === link.href || link.dropdown.some(item => location.pathname === item.href)
                         ? 'text-[#00B9B3] after:absolute after:left-0 after:bottom-0 after:w-full after:h-[2px] after:bg-[#00B9B3]'
                         : 'hover:text-[#00B9B3]'
-                    }`}
+                    }}
                   >
                     {link.name}
-                    <ChevronDown className="h-3.5 w-3.5 ml-1" />
+                    <ChevronDown className="h-4 w-4 ml-1" />
                   </button>
-                  <div className="absolute top-full left-0 mt-2 w-56 bg-white shadow-lg rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                    <div className="py-1">
+                  <div className="absolute top-full left-0 mt-2 w-64 bg-white shadow-lg rounded-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+                    <div className="py-2">
                       {link.dropdown.map((item) => (
                         <Link
                           key={item.name}
                           to={item.href}
-                          className="block px-3 py-1 text-gray-700 hover:bg-gray-50 hover:text-[#00B9B3] transition-colors text-xs"
+                          className="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-[#00B9B3] transition-colors"
                         >
                           {item.name}
                         </Link>
@@ -136,11 +137,11 @@ const Header = () => {
               ) : (
                 <Link
                   to={link.href}
-                  className={`relative px-1.5 py-1 whitespace-nowrap transition-all duration-200 ${
+                  className={relative px-2.5 py-2 whitespace-nowrap transition-all duration-200 ${
                     location.pathname === link.href
                       ? 'text-[#00B9B3] after:absolute after:left-0 after:bottom-0 after:w-full after:h-[2px] after:bg-[#00B9B3]'
                       : 'hover:text-[#00B9B3]'
-                  }`}
+                  }}
                 >
                   {link.name}
                 </Link>
@@ -149,10 +150,10 @@ const Header = () => {
           ))}
         </nav>
 
-        {/* Smaller CTA */}
+        {/* CTA Button */}
         <Link
           to="/contact"
-          className="hidden lg:inline-block bg-[#FF6F3C] text-white px-3 py-2 rounded-full shadow-md hover:bg-opacity-90 transition-all duration-200 font-semibold text-xs"
+          className="hidden lg:inline-block bg-[#FF6F3C] text-white px-5 py-3 rounded-full shadow-md hover:bg-opacity-90 transition-all duration-200 font-semibold text-sm"
         >
           get in<br />touch
         </Link>
@@ -168,9 +169,9 @@ const Header = () => {
 
       {/* Mobile Navigation Drawer */}
       <div
-        className={`lg:hidden fixed top-0 right-0 h-full w-80 bg-white shadow-2xl transform transition-transform duration-300 ease-in-out z-50 ${
+        className={lg:hidden fixed top-0 right-0 h-full w-80 bg-white shadow-2xl transform transition-transform duration-300 ease-in-out z-50 ${
           isMenuOpen ? 'translate-x-0' : 'translate-x-full'
-        }`}
+        }}
       >
         <div className="flex flex-col h-full">
           {/* Drawer Header */}
@@ -196,14 +197,14 @@ const Header = () => {
                   <>
                     <button
                       onClick={() => handleDropdownToggle(link.name)}
-                      className={`flex items-center justify-between w-full text-base font-semibold transition-colors py-2.5 border-b border-gray-100 tracking-wide ${
+                      className={flex items-center justify-between w-full text-base font-semibold transition-colors py-2.5 border-b border-gray-100 tracking-wide ${
                         location.pathname === link.href || link.dropdown.some(item => location.pathname === item.href)
                           ? 'text-[#00B9B3]'
                           : 'text-gray-700 hover:text-[#00B9B3]'
-                      }`}
+                      }}
                     >
                       {link.name}
-                      <ChevronDown className={`h-4 w-4 transition-transform ${openDropdown === link.name ? 'rotate-180' : ''}`} />
+                      <ChevronDown className={h-4 w-4 transition-transform ${openDropdown === link.name ? 'rotate-180' : ''}} />
                     </button>
                     {openDropdown === link.name && (
                       <div className="pl-4 mt-2 space-y-2">
@@ -223,11 +224,11 @@ const Header = () => {
                 ) : (
                   <Link
                     to={link.href}
-                    className={`block text-base font-semibold transition-colors py-2.5 border-b border-gray-100 tracking-wide whitespace-nowrap ${
+                    className={block text-base font-semibold transition-colors py-2.5 border-b border-gray-100 tracking-wide whitespace-nowrap ${
                       location.pathname === link.href
                         ? 'text-[#00B9B3]'
                         : 'text-gray-700 hover:text-[#00B9B3]'
-                    }`}
+                    }}
                     onClick={() => setIsMenuOpen(false)}
                   >
                     {link.name}
